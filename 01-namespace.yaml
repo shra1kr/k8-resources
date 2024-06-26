@@ -1,0 +1,7 @@
+kind: Namespace
+appVersion: v1
+meatdata:
+  name: expense
+  lables:
+    name: expense
+    environment: dev
