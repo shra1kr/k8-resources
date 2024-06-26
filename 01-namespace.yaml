@@ -1,7 +1,7 @@
 kind: Namespace
 apiVersion: v1
-meatdata:
+metadata:
   name: expense
-  lables:
+  labels:
     name: expense
     environment: dev
