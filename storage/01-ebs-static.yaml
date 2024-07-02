@@ -1,4 +1,69 @@
-# we are representing external volume as PV (PV)
+# # we are representing external volume as PV (PV)
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: ebs-static
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   capacity:
+#     storage: 100Gi
+#   csi:
+#     driver: ebs.csi.aws.com
+#     fsType: ext4
+#     volumeHandle: vol-0a0d24356e5c0c7e1
+# ---
+# # pod claims the persistant volume claim (PVC)
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: ebs-static
+# spec:
+#   storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+#   volumeName: ebs-static
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
+# ---
+# # pod defination
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: nginx-static
+#   labels:
+#     purpose: ebs-static
+#     project: expense
+# spec:
+#   containers:
+#   - name: nginx
+#     image: nginx
+#     volumeMounts:
+#     - name: persistent-storage
+#       mountPath: /usr/share/nginx/html
+#   volumes:
+#   - name: persistent-storage
+#     persistentVolumeClaim:
+#       claimName: ebs-static
+# ---
+# # LoadBalancer creation and attaching
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nginx-lb
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     purpose: ebs-static
+#     project: expense
+#   ports:
+#   - protocol: TCP
+#     port: 80 #service-port
+#     targetPort: 80 #target-port.
+
+
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -13,7 +78,6 @@ spec:
     fsType: ext4
     volumeHandle: vol-0a0d24356e5c0c7e1
 ---
-# pod claims the persistant volume claim (PVC)
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -27,7 +91,6 @@ spec:
     requests:
       storage: 5Gi
 ---
-# pod defination
 apiVersion: v1
 kind: Pod
 metadata:
@@ -42,12 +105,13 @@ spec:
     volumeMounts:
     - name: persistent-storage
       mountPath: /usr/share/nginx/html
+  nodeSelector:
+    topology.kubernetes.io/zone: us-east-1c
   volumes:
   - name: persistent-storage
     persistentVolumeClaim:
       claimName: ebs-static
 ---
-# LoadBalancer creation and attaching
 apiVersion: v1
 kind: Service
 metadata:
@@ -60,6 +124,7 @@ spec:
   ports:
   - protocol: TCP
     port: 80 #service-port
-    targetPort: 80 #target-port.
+    targetPort: 80
+
 
 
