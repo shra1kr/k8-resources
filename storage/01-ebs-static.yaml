@@ -11,7 +11,7 @@ spec:
   csi:
     driver: ebs.csi.aws.com
     fsType: ext4
-    volumeHandle: vol-00d864fbda12c429d
+    volumeHandle: vol-0a0d24356e5c0c7e1
 ---
 # pod claims the persistant volume claim (PVC)
 apiVersion: v1
