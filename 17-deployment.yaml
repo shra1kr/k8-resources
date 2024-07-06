@@ -1,3 +1,33 @@
+# kind: Deployment
+# apiVersion: apps/v1
+# metadata:
+#   name: nginx
+#   # these labels are deployment related labels
+#   labels:
+#     app: nginx
+#     purpose: deployment
+#     tier: web
+# spec:
+#   replicas: 20
+#   selector:
+#     matchLabels:
+#       app: nginx
+#       tier: web
+#       project: test-project
+#   # pod definition
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx
+#         tier: web
+#         project: test-project
+#         extra-key: extra-value
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx:stable-perl
+
+
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -8,7 +38,7 @@ metadata:
     purpose: deployment
     tier: web
 spec:
-  replicas: 20
+  replicas: 5
   selector:
     matchLabels:
       app: nginx
@@ -25,4 +55,19 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:stable-perl
+        image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app: nginx
+    tier: web
+    project: test-project
+  ports:
+  - protocol: TCP
+    port: 80 #service-port
+    targetPort: 80 #target-port
+
