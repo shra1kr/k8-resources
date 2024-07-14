@@ -9,11 +9,11 @@ spec:
   - name: nginx
     image: nginx
     imagePullPolicy: Always # keep this as always
-  tolerations:
-  - key: "project"
-    operator: "Equal"
-    value: "expense"
-    effect: "NoSchedule"
-  - key: "project"
-    operator: "Exists"
-    effect: "NoSchedule"
+  # tolerations:
+  # - key: "project"
+  #   operator: "Equal"
+  #   value: "expense"
+  #   effect: "NoSchedule"
+  # - key: "project"
+  #   operator: "Exists"
+  #   effect: "NoSchedule"
